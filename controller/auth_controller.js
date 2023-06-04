@@ -8,7 +8,7 @@ const register = (req, res) => {
 
   conn.query(q, [req.body.email, req.body.username], (err, data) => {
     if (err) return res.status(500).json(err);
-    if (data.length) return res.status(409).json("User already exists!");
+    if (data.length) return res.status(409).json({ "success": false, "message": "User already exist" });
 
     //Hash the password and create a user
     const salt = bcrypt.genSaltSync(10);
@@ -19,7 +19,7 @@ const register = (req, res) => {
 
     conn.query(q, [values], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("User has been created.");
+      return res.status(200).json({ "success": true, "message": "User registration successful" });
     });
   });
 };
@@ -55,10 +55,10 @@ const login = (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie("access_token",{
-    sameSite:"none",
-    secure:true
+  res.clearCookie("access_token", {
+    sameSite: "none",
+    secure: true
   }).status(200).json("User has been logged out.")
 };
 
-export {register , login, logout};
+export { register, login, logout };
