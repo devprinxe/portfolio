@@ -32,4 +32,4 @@ const validateLogin = (req, res, next) => {
     next();
 };
 
-export { registrationValidationRules, validateRegistration };
+export { registrationValidationRules, validateRegistration, loginValidationRules, validateLogin };
