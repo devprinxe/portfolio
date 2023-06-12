@@ -42,17 +42,41 @@ const login = (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json("Wrong username or password!");
 
-    const token = jwt.sign({ id: data[0].id }, "jwtkey");
-    const { password, ...other } = data[0];
+    const token = jwt.sign({ id: data[0].id }, "princemahmud");
 
     res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
       .status(200)
-      .json(other);
+      .json({'message': "Login Success","token": token});
   });
 };
+
+const profile = (req,res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, "princemahmud", (err, decoded) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      const q = "SELECT * FROM users WHERE id = ?";
+      conn.query(q, [decoded.id], (err,results) => {
+        if(err) throw err;
+        const specificData = results.map((row) => ({
+          id: row.id,
+          username: row.username,
+          email: row.email
+        }));
+
+        res.status(200).json({"sucsess": true,"message": "Profile get successfully","data": specificData});
+      })
+      
+    });
+  } else {
+    res.sendStatus(401);
+  }
+  
+}
 
 const logout = (req, res) => {
   res.clearCookie("access_token", {
@@ -61,4 +85,4 @@ const logout = (req, res) => {
   }).status(200).json("User has been logged out.")
 };
 
-export { register, login, logout };
+export { register, login, logout, profile };
