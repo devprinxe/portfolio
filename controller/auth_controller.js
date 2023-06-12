@@ -42,7 +42,7 @@ const login = (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json("Wrong username or password!");
 
-    const token = jwt.sign({ id: data[0].id }, "princemahmud");
+    const token = jwt.sign({ id: data[0].id,username: data[0].username, email: data[0].email }, "princemahmud");
 
     res
       .status(200)
