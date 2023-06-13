@@ -1,15 +1,15 @@
 import mysql from "mysql";
 
 const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "blog"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
-conn.connect((err)=>{
-    if(err) throw err;
-    console.log("Database Conection Sccessful");
+conn.connect((err) => {
+  if (err) throw err;
+  console.log("Database Conection Sccessful");
 });
 
-export {conn};
+export { conn };
