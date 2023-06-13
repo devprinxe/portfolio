@@ -1,15 +1,16 @@
-import express from "express";
+import path from "path";
+import multer from "multer";
 
- const saveFile = (req, res) => {
-    if (req.fileValidationError) {
-      // Print the error message
-      console.error(req.fileValidationError);
-      // Return an error response to the client
-      return res.status(400).json({ error: req.fileValidationError });
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
     }
-    const fileUrl = `http://localhost:3000/uploads/${req.file.filename}`;
-    // File upload succeeded
-    res.json({ message: 'File uploaded successfully', "fileUrl": fileUrl});
-  };
+  });
+  
+  const upload = multer({ storage: storage });
 
-  export { saveFile };
+  export { upload };
