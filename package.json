@@ -23,6 +23,8 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.9.3",
     "nodemailer-smtp-transport": "^2.7.4",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
   }
 }
